@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Spinning flags, the Bibi wall, and a very unnecessary Hava Nagila rave.">
+<title>meow :3 — BIBI OVERLOAD</title>
+<style>
+:root{color-scheme:light;--blue:#064bbe;--ink:#062b72}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font-family:Arial,Helvetica,sans-serif;background:#eff5ff;background-image:linear-gradient(#064bbe0b 1px,transparent 1px),linear-gradient(90deg,#064bbe0b 1px,transparent 1px);background-size:28px 28px}
+button,input{font:inherit}button,a,input{touch-action:manipulation}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #ffbb00;outline-offset:5px}
+.ticker{overflow:hidden;background:var(--blue);color:white;padding:11px 0;font:bold 13px monospace;letter-spacing:2px;white-space:nowrap}.ticker span{display:block;width:max-content;animation:scroll 25s linear infinite}
+main{max-width:1100px;margin:auto;padding:32px 24px 48px}.topline{display:flex;justify-content:space-between;gap:16px;font:bold 12px monospace;letter-spacing:1px}.live{display:flex;align-items:center;gap:7px}.live:before{content:'';width:7px;height:7px;border-radius:50%;background:#168653}
+.hero{text-align:center;position:relative;padding:38px 0 22px}h1{font-size:clamp(50px,10vw,112px);letter-spacing:-.075em;line-height:.9;margin:20px 0;color:var(--blue)}h1 span{display:block;color:transparent;-webkit-text-stroke:2px var(--blue)}.eyebrow{font:700 13px monospace;letter-spacing:3px}.intro{max-width:660px;margin:22px auto 0;font-size:14px;line-height:1.6}.spinners{display:flex;justify-content:center;gap:24px;align-items:center;margin:32px 0}.spin{display:inline-block;animation:spin 8s linear infinite;transform-origin:center}.reverse{animation-direction:reverse}.star{font:80px Georgia,serif;color:var(--blue);line-height:1}.flag{width:105px;height:72px;background:white;position:relative;display:grid;place-items:center;border:1px solid #d1ddf5;box-shadow:4px 4px 0 #064bbe18}.flag:before,.flag:after{content:'';position:absolute;left:0;right:0;height:10px;background:var(--blue)}.flag:before{top:10px}.flag:after{bottom:10px}.flag svg{width:35px;height:35px;stroke:var(--blue);fill:none;stroke-width:6}
+.player{background:var(--blue);color:white;padding:24px 28px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:22px;box-shadow:6px 6px 0 #082c70}.player h2{font-size:24px;letter-spacing:-1px;margin:4px 0 8px}.player p{font:12px monospace;opacity:.85;margin:0;line-height:1.6}.player .tag{font:11px monospace;letter-spacing:2px;color:#c9ddff}.controls{display:flex;flex-direction:column;gap:15px;min-width:230px}.buttons{display:flex;gap:8px}button{border:2px solid var(--blue);background:white;color:var(--blue);padding:11px 15px;font:bold 12px monospace;box-shadow:3px 3px 0 #b9cef3}button:hover{background:#e2edff}button:active{transform:translate(2px,2px);box-shadow:none}.player button{border-color:white;box-shadow:3px 3px 0 #002777}.player button.secondary{background:transparent;color:white}.volume{font:11px monospace;display:flex;align-items:center;gap:10px}.volume input{width:100%;accent-color:white}.status{min-height:19px}
+.section-heading{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--blue);padding-bottom:14px;margin:50px 0 24px}.section-heading h2{margin:0;font-size:27px;letter-spacing:-1px}.section-heading span{font:11px monospace;letter-spacing:1px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding:10px 6px 15px}.photo{margin:0;padding:10px;background:white;border:2px solid var(--blue);box-shadow:6px 6px 0 #b9cef3;transform:rotate(-3deg)}.photo:nth-child(2){transform:rotate(3deg)}.photo:nth-child(3){transform:rotate(-2deg)}.image-wrap{height:260px;overflow:hidden;background:#dbe7fb;display:grid;place-items:center}.photo img{width:100%;height:100%;object-fit:cover}.photo:first-child img{object-position:center 35%}.photo:nth-child(2) img{object-position:center 20%}.photo:nth-child(3) img{animation:spin 18s linear infinite;width:220px;height:220px;border-radius:50%;border:8px solid var(--blue);object-position:center 30%}.photo figcaption{display:flex;justify-content:space-between;gap:10px;padding:15px 4px 7px;font:bold 12px monospace}.stamp{font-size:11px;color:#6b81a7}.motto{text-align:center;font:bold 13px monospace;letter-spacing:5px;padding:32px 0 18px}.toolbar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.credits{font:11px/1.8 monospace;text-align:center;margin-top:30px;color:#647da4}.credits a{color:inherit}
+dialog{border:3px solid var(--blue);color:var(--ink);padding:22px;max-width:calc(100% - 40px);box-shadow:8px 8px 0 #082c7040}dialog::backdrop{background:#00245855}dialog p{font:bold 20px monospace}body.alarm{animation:red-flash 1.5s ease-in-out infinite}body.alarm dialog::backdrop{animation:red-flash 1.5s ease-in-out infinite}
+.paused .spin,.paused .photo img,.paused .ticker span{animation-play-state:paused!important}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes scroll{to{transform:translateX(-50%)}}@keyframes red-flash{0%,100%{background-color:#eff5ff}50%{background-color:#f88}}
+@media(max-width:700px){main{padding:24px 18px}.topline{font-size:10px}.hero{padding-top:30px}.player{grid-template-columns:1fr;padding:22px}.controls{min-width:0}.gallery{gap:18px;grid-template-columns:1fr;max-width:360px;margin:auto}.image-wrap{height:300px}.section-heading span{max-width:110px;text-align:right;line-height:1.7}.spinners{gap:16px}.star{font-size:55px}.flag{width:85px;height:60px}.flag svg{width:28px;height:28px}.flag:before{top:7px;height:8px}.flag:after{bottom:7px;height:8px}.motto{letter-spacing:2px}}
+@media(prefers-reduced-motion:reduce){.spin,.photo img,.ticker span{animation:none!important}body.alarm,body.alarm dialog::backdrop{animation:none;background-color:#f88}}
+</style>
+<link rel="stylesheet" href="/chaos.css">
+</head>
+<body>
+<div id="bibi-sky" aria-hidden="true"></div>
+<div class="corner corner-tl"><video class="corner-video" src="/assets/corner-chaos.mp4" poster="/assets/corner-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Meme video, top left"></video></div>
+<div class="corner corner-tr"><video class="corner-video" src="/assets/corner-chaos.mp4" poster="/assets/corner-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Meme video, top right"></video></div>
+<div class="corner corner-bl"><video class="corner-video" src="/assets/corner-chaos.mp4" poster="/assets/corner-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Meme video, bottom left"></video></div>
+<div class="corner corner-br"><video class="corner-video" src="/assets/corner-chaos.mp4" poster="/assets/corner-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Meme video, bottom right"></video></div>
+<div class="ticker" aria-hidden="true"><span>✡ MAXIMUM SPIN · 🇮🇱 WELCOME TO THE INTERNET · MEOW :3 · ✡ MAXIMUM SPIN · 🇮🇱 WELCOME TO THE INTERNET · MEOW :3 · ✡ MAXIMUM SPIN · 🇮🇱 WELCOME TO THE INTERNET · MEOW :3 · ✡ MAXIMUM SPIN · 🇮🇱 WELCOME TO THE INTERNET · MEOW :3 · </span></div>
+<main>
+<div class="israel-ribbon" aria-hidden="true">🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱</div>
+<div class="topline"><span>CKAZROSLOVESBOYS.XYZ / :3</span><span class="live">ABSOLUTELY UNNECESSARY</span></div>
+<header class="hero">
+<div class="eyebrow">THE INTERNET HAS LOST CONTAINMENT</div>
+<h1>BIBI OVERLOAD<span>no thoughts. just chaos.</span></h1>
+<p class="intro">hello fellow femboy, thank you for visiting this website, you should go fuck yourself</p>
+<div class="spinners" aria-label="Spinning Israeli flags and Stars of David">
+<span class="star spin" aria-hidden="true">✡</span>
+<span class="flag spin reverse" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 8 87 72H13ZM50 92 13 28H87Z"/></svg></span>
+<span class="star spin reverse" aria-hidden="true">✡</span>
+<span class="flag spin" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 8 87 72H13ZM50 92 13 28H87Z"/></svg></span>
+<span class="star spin" aria-hidden="true">✡</span>
+</div>
+</header>
+<section aria-labelledby="gallery-title">
+<div class="section-heading"><h2 id="gallery-title">The Bibi wall.</h2><span>BIBIS ARE MULTIPLYING.</span></div>
+<div class="gallery">
+<figure class="photo"><div class="image-wrap"><img src="/assets/bibi-portrait.jpg" alt="Portrait of Benjamin Netanyahu" width="1310" height="1263"></div><figcaption>JUST CHECKING IN <span class="stamp">01 / BIBI</span></figcaption></figure>
+<figure class="photo"><div class="image-wrap"><img src="/assets/bibi-throwback.jpg" alt="Benjamin Netanyahu in 2003" width="291" height="412"></div><figcaption>THE THROWBACK <span class="stamp">02 / BIBI</span></figcaption></figure>
+<figure class="photo"><div class="image-wrap"><img src="/assets/bibi-portrait.jpg" alt="A slowly spinning Netanyahu portrait" width="1310" height="1263"></div><figcaption>ROTATING RESPONSIBLY <span class="stamp">33⅓ RPM</span></figcaption></figure>
+</div>
+</section>
+<section class="bibi-overflow" aria-labelledby="overflow-title"><h2 id="overflow-title">Oops. More Bibis.</h2><div id="bibi-grid" class="bibi-grid"></div><div class="bibi-conveyor" aria-hidden="true"><div id="bibi-train"></div></div><button id="more-bibis" type="button">+ SUMMON MORE BIBIS</button><p id="bibi-count" role="status"></p></section>
+<div class="israel-ribbon israel-ribbon-bottom" aria-hidden="true">✡ 🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱 ✡ 🇮🇱 ✡</div>
+<div class="motto">✡ TOO MANY BIBIS. NOT ENOUGH CORNERS. ✡</div>
+<div class="toolbar"><button id="motion" type="button" aria-pressed="false">Ⅱ PAUSE SPINNING</button><button id="start-alarm" type="button">☢ ALARM MODE</button><button id="quiet" type="button">☢ STOP ALARMS</button></div>
+<p class="credits">Photo credits: <a href="https://commons.wikimedia.org/wiki/File:Benjamin_Netanyahu_portrait.jpg">US State Department / TheCuriousGnome</a> · <a href="https://commons.wikimedia.org/wiki/File:Benjamin_Netanyahu.jpg">Gary Ackerman</a> / Wikimedia Commons.<br>Music: original synthesized arrangement of <a href="https://commons.wikimedia.org/wiki/File:Hava_nagila.ogg">Hava Nagila</a>. Internet silliness. No affiliation.</p>
+</main>
+<dialog id="warning" aria-labelledby="warning-text"><p id="warning-text"></p><form method="dialog"><button value="ok">OK</button> <button value="stop">Stop alarms</button></form></dialog>
+<script>
+(()=>{
+const popup=document.getElementById('warning'),text=document.getElementById('warning-text');
+const messages=['☢ NUCLEAR WARNING!','☢ REACTOR CRITICAL!','☢ EMERGENCY ALARM!'];
+let context,oscillator,gain,sirenTimer,endTimer,popupTimer,index=0,active=false,stopped=false;
+function stop(){
+ stopped=true;active=false;document.body.classList.remove("alarm");clearInterval(sirenTimer);clearTimeout(endTimer);clearTimeout(popupTimer);
+ if(gain&&context)gain.gain.setTargetAtTime(0,context.currentTime,.03);
+ if(oscillator){oscillator.stop();oscillator=null;}
+}
+function sound(){
+ if(stopped)return;
+ const Engine=window.AudioContext||window.webkitAudioContext;if(!Engine)return;
+ try{
+ if(!context){context=new Engine();gain=context.createGain();gain.gain.value=.24;gain.connect(context.destination);}
+ context.resume().catch(()=>{});
+ if(!active||oscillator)return;
+ oscillator=context.createOscillator();oscillator.type='sawtooth';oscillator.connect(gain);oscillator.start();
+ const sweep=()=>{if(!oscillator)return;const now=context.currentTime;oscillator.frequency.cancelScheduledValues(now);oscillator.frequency.setValueAtTime(350,now);oscillator.frequency.linearRampToValueAtTime(950,now+1);oscillator.frequency.linearRampToValueAtTime(350,now+2);};
+ sweep();sirenTimer=setInterval(sweep,2000);endTimer=setTimeout(stop,20000);
+ }catch{}
+}
+function next(){if(stopped||index>=messages.length)return;text.textContent=messages[index++];popup.showModal();}
+document.addEventListener('pointerdown',sound);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){stop();if(popup.open)popup.close('stop');}else sound();});
+popup.addEventListener('close',()=>{if(popup.returnValue==='stop'){stop();return;}sound();popupTimer=setTimeout(next,800);});
+popup.addEventListener('cancel',stop);
+document.addEventListener('stop-alarms',()=>{stop();if(popup.open)popup.close('stop');});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+document.addEventListener('start-alarms',()=>{if(active)return;stopped=false;index=0;active=true;if(gain&&context)gain.gain.setTargetAtTime(.24,context.currentTime,.03);document.body.classList.add("alarm");endTimer=setTimeout(()=>{stop();if(popup.open)popup.close('stop');},20000);sound();next();});
+})();
+</script>
+<script>
+(()=>{
+
+let audio,master,timer,nextTime=0,step=0,playing=false,pending=false,generation=0;
+const nodes=new Set();
+// Traditional melody, newly arranged for pulse lead, bass and a four-on-the-floor beat.
+const melody=[[64,2],[64,1],[65,1],[68,2],[65,1],[64,1],[69,2],[68,1],[65,1],[64,4],[62,2],[62,1],[64,1],[65,2],[64,1],[62,1],[65,2],[64,1],[62,1],[60,4],[64,2],[64,1],[65,1],[68,2],[65,1],[64,1],[69,2],[68,1],[65,1],[64,4],[71,2],[71,1],[72,1],[74,2],[72,1],[71,1],[69,2],[68,1],[65,1],[64,4]];
+const sequence=[];for(const [note,length] of melody){sequence.push(note);for(let i=1;i<length;i++)sequence.push(null);}
+const tick=60/144/2;
+function tone(note,time,duration,level,type){
+ const oscillator=audio.createOscillator(),gain=audio.createGain();oscillator.type=type;oscillator.frequency.value=440*Math.pow(2,(note-69)/12);gain.gain.setValueAtTime(0,time);gain.gain.linearRampToValueAtTime(level,time+.008);gain.gain.exponentialRampToValueAtTime(.0001,time+duration);oscillator.connect(gain);gain.connect(master);nodes.add(oscillator);oscillator.onended=()=>{nodes.delete(oscillator);oscillator.disconnect();gain.disconnect();};oscillator.start(time);oscillator.stop(time+duration+.02);
+}
+function kick(time){
+ const oscillator=audio.createOscillator(),gain=audio.createGain();oscillator.frequency.setValueAtTime(130,time);oscillator.frequency.exponentialRampToValueAtTime(40,time+.12);gain.gain.setValueAtTime(.45,time);gain.gain.exponentialRampToValueAtTime(.0001,time+.16);oscillator.connect(gain);gain.connect(master);nodes.add(oscillator);oscillator.onended=()=>{nodes.delete(oscillator);oscillator.disconnect();gain.disconnect();};oscillator.start(time);oscillator.stop(time+.18);
+}
+function schedule(){
+ while(playing&&nextTime<audio.currentTime+.15){
+  const note=sequence[step%sequence.length];if(note!==null)tone(note+12,nextTime,tick*1.4,.13,'square');
+  if(step%2===0){kick(nextTime);tone(step%8<4?40:45,nextTime,tick*1.7,.19,'triangle');}
+  else tone(92,nextTime,.035,.035,'square');
+  nextTime+=tick;step++;
+ }
+}
+function stop(){
+ generation++;pending=false;playing=false;clearInterval(timer);for(const node of nodes){try{node.stop();}catch{}}nodes.clear();
+ if(master&&audio)master.gain.setValueAtTime(0,audio.currentTime);
+
+}
+async function startMusic(){
+ if(playing||document.hidden)return;
+ if(pending){if(audio)void audio.resume().catch(()=>{});return;}
+ const Engine=window.AudioContext||window.webkitAudioContext;if(!Engine)return;
+ const attempt=++generation;pending=true;
+ try{
+  if(!audio){audio=new Engine();master=audio.createGain();master.gain.value=0;master.connect(audio.destination);}
+  await audio.resume();if(attempt!==generation)return;pending=false;
+  if(audio.state!=='running')return;
+  master.gain.setValueAtTime(.3,audio.currentTime);playing=true;step=0;nextTime=audio.currentTime+.04;schedule();timer=setInterval(schedule,25);
+ }catch{stop();}
+}
+void startMusic();
+for(const event of ['pointerdown','keydown'])document.addEventListener(event,()=>void startMusic());
+document.addEventListener('stop-site-audio',stop);
+document.getElementById('quiet').addEventListener('click',()=>document.dispatchEvent(new Event('stop-alarms')));
+const motion=document.getElementById('motion'),preference=window.matchMedia('(prefers-reduced-motion: reduce)');
+function motionLabel(){const paused=document.body.classList.contains('paused')||preference.matches;motion.setAttribute('aria-pressed',String(paused));motion.textContent=preference.matches?'REDUCED MOTION ENABLED':paused?'▶ RESUME SPINNING':'Ⅱ PAUSE SPINNING';motion.disabled=preference.matches;}
+motion.addEventListener('click',()=>{document.body.classList.toggle('paused');motionLabel();});preference.addEventListener('change',motionLabel);document.addEventListener('refresh-motion',motionLabel);motionLabel();
+document.addEventListener('keydown',e=>{if(e.key==='Escape')stop();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else void startMusic();});window.addEventListener('pagehide',stop);
+})();
+</script>
+<script src="/chaos.js"></script>
+</body>
+</html>

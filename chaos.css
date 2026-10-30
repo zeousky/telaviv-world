@@ -1,0 +1,34 @@
+:root{--corner:clamp(90px,14vw,180px)}
+body{background-color:#e5edff;background-image:repeating-conic-gradient(#3671ef17 0 25%,transparent 0 50%);background-size:72px 72px;overflow-x:clip}
+main{position:relative;z-index:3;padding-top:100px;padding-bottom:230px}
+.ticker{position:relative;z-index:4;background:#001b89;border-bottom:5px dashed #d7ff00}
+.ticker span{animation-duration:12s}
+.topline{padding:8px;background:#d7ff00;color:#061b63;transform:rotate(-1deg)}
+.hero h1{font-size:clamp(54px,8.8vw,106px);text-shadow:5px 5px 0 #ff82db;animation:title-wobble 4s ease-in-out infinite}
+.hero h1 span{font-size:.56em;letter-spacing:-.06em;color:#fff;-webkit-text-stroke:1px #064bbe;text-shadow:3px 3px #d7ff00}
+.hero .eyebrow{background:#00299d;color:white;display:inline-block;padding:9px 16px;transform:rotate(2deg)}
+.spinners{animation:levitate 3s ease-in-out infinite}.spinners .spin{animation-duration:3s}.spinners .reverse{animation-duration:4.5s}
+.player{border:4px solid #d7ff00;transform:rotate(-1deg);box-shadow:9px 9px #ff82db}
+.corner{position:fixed;z-index:30;width:var(--corner);aspect-ratio:1;border:4px solid #d7ff00;background:#001856;box-shadow:0 0 0 3px #064bbe,5px 5px 0 #ff58cb;animation:corner-wiggle 3s ease-in-out infinite}
+.corner video{width:100%;height:100%;object-fit:cover;display:block}.corner span{position:absolute;bottom:0;left:0;right:0;background:#041344d9;color:#d7ff00;font:bold 9px monospace;letter-spacing:1px;text-align:center;padding:3px 0;pointer-events:none}
+.corner-tl{top:12px;left:12px}.corner-tr{top:12px;right:12px;animation-delay:-1s}.corner-bl{bottom:12px;left:12px;animation-delay:-2s}.corner-br{bottom:12px;right:12px;animation-delay:-.5s}
+.chaos-dock{position:fixed;z-index:60;bottom:18px;left:50%;transform:translateX(-50%);width:min(450px,calc(100vw - 2 * var(--corner) - 50px));padding:12px;background:#071b58;box-shadow:5px 5px 0 #ff82db;border:3px solid #d7ff00;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;color:white}
+.chaos-dock button{font-size:11px;padding:10px;border:0;background:#d7ff00;color:#071b58;box-shadow:none;flex:1}.chaos-dock #panic{background:#ff82db}.chaos-dock p{font:10px/1.4 monospace;text-align:center;margin:0;width:100%}
+#bibi-sky{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}.flying-bibi{position:absolute;width:clamp(42px,6vw,86px);height:clamp(42px,6vw,86px);object-fit:cover;border-radius:50%;border:4px solid #d7ff00;box-shadow:0 0 0 3px #064bbe;opacity:.7;animation:fly-across var(--flight) linear infinite;animation-delay:var(--delay);top:var(--lane)}
+.photo{animation:photo-dance 4s ease-in-out infinite}.photo:nth-child(2){animation-delay:-1.5s}.photo:nth-child(3){animation-delay:-3s}.photo:nth-child(3) img{animation-duration:5s}
+.bibi-overflow{margin-top:55px;text-align:center;border:4px dashed #064bbe;padding:25px 15px;background:#ffffffc9;box-shadow:10px 10px #ff82db}.bibi-overflow h2{font-size:clamp(32px,5vw,60px);margin:0 0 25px;letter-spacing:-2px;color:#064bbe}.bibi-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.bibi-tile{margin:0;padding:5px;background:#d7ff00;border:2px solid #064bbe;min-width:0;animation:bibi-bob 2.5s ease-in-out infinite;animation-delay:calc(var(--i) * -.17s)}.bibi-tile img{width:100%;aspect-ratio:1;object-fit:cover;display:block}.bibi-tile figcaption{font:bold 10px monospace;margin-top:6px;color:#031f67;overflow-wrap:anywhere}.bibi-tile:nth-child(3n){background:#ff82db;animation-name:bibi-tilt}.bibi-tile:nth-child(4n) img{border-radius:50%;animation:spin 6s linear infinite}.bibi-tile:nth-child(5n){background:#b8edff}
+.bibi-conveyor{overflow:hidden;border-block:3px solid #064bbe;margin:25px -15px;background:#064bbe;padding:9px 0}#bibi-train{display:flex;width:max-content;gap:12px;animation:train 20s linear infinite}#bibi-train img{width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid white}#bibi-count{font:bold 12px monospace;min-height:16px}
+.motto{line-height:1.7;letter-spacing:2px}.credits{background:#ffffffd9;padding:12px}.calm *, .paused *{animation-play-state:paused!important}.calm #bibi-sky{opacity:.2}.calm .corner{box-shadow:none}.calm .hero h1{text-shadow:none}
+@keyframes corner-wiggle{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes title-wobble{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes levitate{0%,100%{transform:translateY(-5px)}50%{transform:translateY(8px)}}
+@keyframes fly-across{from{transform:translateX(-120px) rotate(0)}to{transform:translateX(calc(100vw + 120px)) rotate(720deg)}}
+@keyframes photo-dance{0%,100%{transform:rotate(-4deg) translateY(0)}50%{transform:rotate(4deg) translateY(-8px)}}
+@keyframes bibi-bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-10px) rotate(4deg)}}
+@keyframes bibi-tilt{0%,100%{transform:rotateY(-18deg) rotate(-5deg)}50%{transform:rotateY(18deg) rotate(5deg)}}
+@keyframes train{to{transform:translateX(-50%)}}
+@media(max-width:700px){:root{--corner:90px}main{padding-top:95px;padding-bottom:260px}.topline{font-size:9px;gap:8px}.hero{padding-top:22px}.hero .eyebrow{font-size:10px;letter-spacing:1px}.hero h1{font-size:clamp(44px,11vw,77px)}.corner{border-width:3px}.corner-tl,.corner-bl{left:7px}.corner-tr,.corner-br{right:7px}.corner-tl,.corner-tr{top:7px}.corner-bl,.corner-br{bottom:7px}.chaos-dock{bottom:calc(var(--corner) + 20px);width:min(400px,calc(100vw - 30px));padding:9px}.bibi-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.bibi-overflow{padding:20px 12px}.bibi-conveyor{margin-inline:-12px}.flying-bibi{opacity:.4}.gallery .image-wrap{height:240px}.spinners{gap:12px}.star{font-size:45px}.flag{width:72px;height:55px}.bibi-tile figcaption{font-size:9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;scroll-behavior:auto!important}#bibi-sky{display:none}}
+
+.israel-ribbon{overflow:hidden;white-space:nowrap;text-align:center;background:#fff;color:#064bbe;border-block:6px solid #064bbe;padding:10px 0;font-size:clamp(20px,3vw,32px);letter-spacing:.3em;box-shadow:5px 5px #ff82db;margin-bottom:25px}
+.israel-ribbon-bottom{margin:45px 0 0;transform:rotate(-1deg)}
