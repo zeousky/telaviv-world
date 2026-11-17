@@ -2,16 +2,12 @@ import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 
-const publicRoot = new URL('./record-public/', import.meta.url);
-const pages = new Set(['/', '/netanyahu/', '/trump/', '/putin/', '/timeline/', '/sources/']);
-const assetTypes = {
-  css: 'text/css; charset=utf-8',
-  js: 'text/javascript; charset=utf-8',
-  png: 'image/png',
-  txt: 'text/plain; charset=utf-8',
-  webp: 'image/webp',
-  woff2: 'font/woff2',
-};
+const publicRoot = new URL('./lunar/', import.meta.url);
+const publicAssets = new Map([
+  ['/survey.css', 'text/css; charset=utf-8'],
+  ...['moon', 'apollo-11', 'apollo-12', 'apollo-14', 'apollo-15', 'apollo-16', 'apollo-17']
+    .map((photo) => ['/plates/' + photo + '.jpg', 'image/jpeg']),
+]);
 
 const server = createServer(async (request, response) => {
   try {
@@ -20,31 +16,26 @@ const server = createServer(async (request, response) => {
       return;
     }
 
-    const { pathname, search } = new URL(request.url, 'http://localhost');
+    const { pathname } = new URL(request.url, 'http://localhost');
     if (pathname === '/health') {
       response.writeHead(200, { 'Content-Type': 'text/plain' }).end(
         request.method === 'HEAD' ? undefined : 'ok',
       );
       return;
     }
-    if (!pathname.endsWith('/') && pages.has(pathname + '/')) {
-      response.writeHead(308, { Location: pathname + '/' + search }).end();
-      return;
-    }
-
-    const asset = /^\/record\/[a-z-]+\.(css|js|png|txt|webp|woff2)$/.exec(pathname);
-    const page = pages.has(pathname) || pathname === '/index.html';
-    if (!asset && !page) {
+    const assetType = publicAssets.get(pathname);
+    const page = pathname === '/' || pathname === '/index.html';
+    if (!assetType && !page) {
       response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Not found');
       return;
     }
 
-    const file = new URL(pathname.slice(1) + (pages.has(pathname) ? 'index.html' : ''), publicRoot);
+    const file = new URL(page ? 'index.html' : pathname.slice(1), publicRoot);
     const { size } = await stat(file);
     const headers = {
-      'Content-Type': asset ? assetTypes[asset[1]] : 'text/html; charset=utf-8',
+      'Content-Type': assetType || 'text/html; charset=utf-8',
       'Content-Length': size,
-      'Cache-Control': asset ? 'public, max-age=3600' : 'no-cache',
+      'Cache-Control': assetType ? 'public, max-age=3600' : 'no-cache',
       'X-Content-Type-Options': 'nosniff',
     };
     if (page) {

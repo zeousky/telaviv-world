@@ -23,14 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-        id: pages
-      - name: Build The Public Record
-        run: node build-record.mjs
-        env:
-          RECORD_URL: ${{ steps.pages.outputs.base_url }}
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: record-public
+          path: lunar
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

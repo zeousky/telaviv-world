@@ -1,8 +1,8 @@
-# The Public Record
+# Lunar Survey
 
-The website for [telaviv.world](https://telaviv.world/) contains three
-biographies, a searchable timeline, and the source library.
+A photographic atlas of the six Apollo landings for
+[telaviv.world](https://telaviv.world/).
 
-Run `npm start` with Node.js 22 or later. The build generates `record-public/`
-from `build-record.mjs`, `record-data/`, and `record-assets/`. GitHub Pages
-publishes the generated directory. The Dockerfile serves the same build.
+GitHub Pages publishes the static files in `lunar/`. For a local preview, run
+`npm start` with Node.js 22 or later and open `http://localhost:8765`.
+The Docker image serves the same directory.
