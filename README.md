@@ -1,13 +1,8 @@
-# telaviv.world
+# The Public Record
 
-Website source for telaviv.world, built with HTML, CSS, JavaScript, and a small Node.js static server.
+The website for [telaviv.world](https://telaviv.world/) contains three
+biographies, a searchable timeline, and the source library.
 
-## Run locally
-
-```sh
-npm start
-```
-
-See `package.json` for the start command and `server.mjs` for the server configuration. The `assets/` directory contains the media used by the pages.
-
-`Dockerfile` and `railway.json` provide deployment configuration. Supply your own hosting account and environment settings.
+Run `npm start` with Node.js 22 or later. The build generates `record-public/`
+from `build-record.mjs`, `record-data/`, and `record-assets/`. GitHub Pages
+publishes the generated directory. The Dockerfile serves the same build.

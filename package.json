@@ -1,1 +1,13 @@
-{"name":"ckazroslovesboys-site","private":true,"type":"module","scripts":{"start":"node server.mjs"},"engines":{"node":">=22"}}
+{
+  "name": "telaviv-world",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build-record.mjs",
+    "prestart": "npm run build",
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

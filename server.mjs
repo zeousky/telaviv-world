@@ -1,29 +1,76 @@
-import {createServer} from 'node:http';
-import {createReadStream} from 'node:fs';
-import {stat} from 'node:fs/promises';
-import {fileURLToPath} from 'node:url';
-const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.jpg':'image/jpeg','.mp4':'video/mp4'};
-const routes=new Map(['/index.html','/chaos.css','/chaos.js','/assets/corner-chaos.mp4','/assets/corner-poster.jpg','/assets/bibi-portrait.jpg','/assets/bibi-throwback.jpg'].map(path=>[path,fileURLToPath(new URL('.'+path,import.meta.url))]));
-export const server=createServer(async(req,res)=>{
- try{
-  if(req.method!=='GET'&&req.method!=='HEAD'){res.writeHead(405,{Allow:'GET, HEAD'}).end();return;}
-  const pathname=new URL(req.url,'http://localhost').pathname;
-  if(pathname==='/health'){res.writeHead(200,{'Content-Type':'text/plain'}).end('ok');return;}
-  const route=pathname==='/'?'/index.html':pathname;
-  const file=routes.get(route);if(!file){res.writeHead(404).end('Not found');return;}
-  const {size}=await stat(file),ext=route.slice(route.lastIndexOf('.'));
-  const headers={'Content-Type':types[ext]||'application/octet-stream','Accept-Ranges':'bytes','X-Content-Type-Options':'nosniff','Cache-Control':route.startsWith('/assets/')?'public, max-age=3600':'no-cache'};
-  let start=0,end=size-1,code=200;
-  if(req.headers.range){
-   const match=/^bytes=(\d*)-(\d*)$/.exec(req.headers.range);
-   if(!match||(!match[1]&&!match[2])){res.writeHead(416,{'Content-Range':`bytes */${size}`}).end();return;}
-   if(!match[1]){start=Math.max(0,size-Number(match[2]));}else{start=Number(match[1]);end=match[2]?Math.min(Number(match[2]),size-1):size-1;}
-   if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start<0||start>=size||end<start){res.writeHead(416,{'Content-Range':`bytes */${size}`}).end();return;}
-   code=206;headers['Content-Range']=`bytes ${start}-${end}/${size}`;
+import { createReadStream } from 'node:fs';
+import { stat } from 'node:fs/promises';
+import { createServer } from 'node:http';
+
+const publicRoot = new URL('./record-public/', import.meta.url);
+const pages = new Set(['/', '/netanyahu/', '/trump/', '/putin/', '/timeline/', '/sources/']);
+const assetTypes = {
+  css: 'text/css; charset=utf-8',
+  js: 'text/javascript; charset=utf-8',
+  png: 'image/png',
+  txt: 'text/plain; charset=utf-8',
+  webp: 'image/webp',
+  woff2: 'font/woff2',
+};
+
+const server = createServer(async (request, response) => {
+  try {
+    if (request.method !== 'GET' && request.method !== 'HEAD') {
+      response.writeHead(405, { Allow: 'GET, HEAD' }).end();
+      return;
+    }
+
+    const { pathname, search } = new URL(request.url, 'http://localhost');
+    if (pathname === '/health') {
+      response.writeHead(200, { 'Content-Type': 'text/plain' }).end(
+        request.method === 'HEAD' ? undefined : 'ok',
+      );
+      return;
+    }
+    if (!pathname.endsWith('/') && pages.has(pathname + '/')) {
+      response.writeHead(308, { Location: pathname + '/' + search }).end();
+      return;
+    }
+
+    const asset = /^\/record\/[a-z-]+\.(css|js|png|txt|webp|woff2)$/.exec(pathname);
+    const page = pages.has(pathname) || pathname === '/index.html';
+    if (!asset && !page) {
+      response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Not found');
+      return;
+    }
+
+    const file = new URL(pathname.slice(1) + (pages.has(pathname) ? 'index.html' : ''), publicRoot);
+    const { size } = await stat(file);
+    const headers = {
+      'Content-Type': asset ? assetTypes[asset[1]] : 'text/html; charset=utf-8',
+      'Content-Length': size,
+      'Cache-Control': asset ? 'public, max-age=3600' : 'no-cache',
+      'X-Content-Type-Options': 'nosniff',
+    };
+    if (page) {
+      headers['Content-Security-Policy'] = "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'";
+    }
+
+    response.writeHead(200, headers);
+    if (request.method === 'HEAD') {
+      response.end();
+      return;
+    }
+    const stream = createReadStream(file);
+    stream.on('error', () => response.destroy());
+    response.on('close', () => stream.destroy());
+    stream.pipe(response);
+  } catch (error) {
+    if (response.headersSent) {
+      response.destroy();
+      return;
+    }
+    const missing = error.code === 'ENOENT';
+    response.writeHead(missing ? 404 : 500, { 'Content-Type': 'text/plain; charset=utf-8' })
+      .end(missing ? 'Not found' : 'Unable to serve file');
   }
-  headers['Content-Length']=String(end-start+1);res.writeHead(code,headers);
-  if(req.method==='HEAD'){res.end();return;}
-  const stream=createReadStream(file,{start,end});stream.on('error',()=>res.destroy());res.on('close',()=>stream.destroy());stream.pipe(res);
- }catch{if(!res.headersSent)res.writeHead(500).end('Unable to serve file');else res.destroy();}
 });
-server.listen(Number(process.env.PORT||8765),'0.0.0.0',()=>console.log(`Site ready on port ${server.address().port}`));
+
+server.listen(Number(process.env.PORT || 8765), '0.0.0.0', () => {
+  console.log('Site ready on port ' + server.address().port);
+});

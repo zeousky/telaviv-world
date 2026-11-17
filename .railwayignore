@@ -1,3 +1,9 @@
+/assets/
+/record-public/
+/*.html
+/*.css
+/*.js
+.DS_Store
 backups/
 function.ts
 website-preview.jpg
